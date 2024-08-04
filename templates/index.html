@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Finder API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div><h1>Welcome to the Image Finder API</h1></div>
+    <p>Search for images using the form below:</p>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="Search images..." required>
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
