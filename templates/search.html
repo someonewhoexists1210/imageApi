@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Finder API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h4>Image Search Results for: <b>{{ query }}</b></h4>
+    <header>
+        <div class="logo">Image Finder</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h4>Image Search Results for: <b>{{ query }}</b></h4>
+        
+        <div class="image-container">
+            {% for image in images %}
+                <div>
+                    <img src="{{ image.image_link }}" alt="{{ image.title }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/fallback.jpg') }}';"><br>
+                    <a href="{{ image.context_link }}">{{ image.title }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
 </body>
 </html>
