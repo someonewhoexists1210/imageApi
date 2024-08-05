@@ -23,7 +23,7 @@
         <div class="image-container">
             {% for image in images %}
                 <div>
-                    <img src="{{ image.image_link }}" alt="{{ image.title }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/fallback.jpg') }}';"><br>
+                    <img src="{{ image.image_link }}" alt="{{ image.title }}"><br>
                     <a href="{{ image.context_link }}">{{ image.title }}</a>
                 </div>
             {% endfor %}
