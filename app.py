@@ -31,12 +31,7 @@ def advanced_search(params):
     url = f"https://www.googleapis.com/customsearch/v1"
     params['cx'] = CX
     params['key'] = API
-    url += '?'
-    for key in params:
-        url += f'{key}={params[key]}&'
-    for key in list(params):
-        if params[key] == 'any' and key != 'q':
-            del params[key]
+    params['searchType'] = 'image'
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()
@@ -93,32 +88,30 @@ def advanced_searchres():
         'imgColorType': request.form.get('imgColorType'),
     }
 
-    # Validate the search query
     if not params['q'] or len(params['q'].strip()) == 0:
         return jsonify({"error": "Search query cannot be empty"}), 400
     if len(params['q']) < 3:
         return jsonify({"error": "Search query must be at least 3 characters long"}), 400
 
-    # Filter out empty or 'any' parameters
     for key in list(params):
         if not params[key] or params[key] == 'any':
             del params[key]
 
-    # Perform the search
     results = advanced_search(params)
-    return results
     if 'error' in results:
         return jsonify(results), 500
 
+    
     if 'items' in results:
         images = []
         for item in results['items']:
             images.append({
                 'title': item.get('title'),
-                'image_link': item.get('pagemap', {}).get('cse_thumbnail', [{}])[0].get('src', 'No image link available'),
-                'context_link': item.get('link', 'No context link available')
+                'image_link': item.get('link'),
+                'context_link': item.get('image').get('contextLink')
             })
-        return render_template('advanced_search.html', images=images, params=params)
+        groups = [images[i:i+3] for i in range(0, len(images), 3)]
+        return render_template('advanced_search.html', images=groups, params=params)
     else:
         return jsonify({"error": "No images found"}), 404
 

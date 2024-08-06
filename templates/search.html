@@ -19,7 +19,7 @@
         <div class="image-container">
             {% for image in images %}
                 <div>
-                    <img src="{{ image.image_link }}" alt="{{ image.title }}"><br>
+                    <img src="{{ image.image_link }}" alt="Image could not load"><br>
                     <a href="{{ image.context_link }}">{{ image.title }}</a>
                 </div>
             {% endfor %}

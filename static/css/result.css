@@ -6,7 +6,6 @@ body {
     color: #333;
 }
 
-
 main {
     padding: 20px;
 }
@@ -22,33 +21,64 @@ h4 {
     justify-content: space-around;
 }
 
-.image-container div {
-    width: 20%;
+.gr {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.image-card {
+    width: 50%;
     padding: 10px;
+    margin: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: #fff;
+    border-radius: 8px;
 }
 
-.image-container div:hover {
-    transform: scale(1.05);
+.image-card:hover {
+    transform: scale(1.01);
 }
 
-.image-container img {
-    width: 100%;
+.image-card img {
+    width: 70%;
     border-radius: 8px;
     align-self: flex-start;
 }
 
-.image-container a {
+.image-card a {
     text-decoration: none;
     color: #4CAF50;
     font-weight: bold;
     align-self: flex-end;
 }
 
-.image-container a:hover {
+.image-card a:hover {
     text-decoration: underline;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.pagination-controls button:hover {
+    background-color: #45a049;
 }
