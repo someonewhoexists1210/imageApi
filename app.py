@@ -61,5 +61,13 @@ def search():
     else:
         return jsonify({"error": "No images found"}), 404
 
+@app.route('/advanced')
+def advanced():
+    return render_template('advanced.html')
+
+@app.route('/advanced/search', methods=['POST'])
+def advanced_search():
+    pass
+
 if __name__ == '__main__':
     app.run(debug=True)

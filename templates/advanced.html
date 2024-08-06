@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Finder API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/advanced.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+</head>
+<body>
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    <div id='text'><h1>Welcome to the Image Finder API</h1>
+    <p>Search for images using the form</p>
+    </div>
+    <form action="/advanced/search" method="post">
+        <label for="query">Search Query:</label>
+        <input type="text" name="query" id="query" placeholder="Search images..." required>
+        
+        <label for="imgSize">Image Size:</label>
+        <select name="imgSize" id="imgSize">
+            <option value="">Any</option>
+            <option value="icon">Icon</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="xlarge">Extra Large</option>
+            <option value="xxlarge">XX Large</option>
+            <option value="huge">Huge</option>
+        </select>
+
+        <label for="imgColorType">Image Color:</label>
+        <select name="imgColorType" id="imgColorType">
+            <option value="">Any</option>
+            <option value="color">Color</option>
+            <option value="gray">Gray</option>
+            <option value="mono">Mono</option>
+        </select>
+
+        <label for="imgType">Image Type:</label>
+        <select name="imgType" id="imgType">
+            <option value="">Any</option>
+            <option value="clipart">Clipart</option>
+            <option value="face">Face</option>
+            <option value="lineart">Lineart</option>
+            <option value="news">News</option>
+            <option value="photo">Photo</option>
+        </select>
+
+        <label for="fileType">File Type:</label>
+        <select name="fileType" id="fileType">
+            <option value="">Any</option>
+            <option value="jpg">JPG</option>
+            <option value="png">PNG</option>
+            <option value="gif">GIF</option>
+            <option value="bmp">BMP</option>
+            <option value="svg">SVG</option>
+            <option value="webp">WEBP</option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
