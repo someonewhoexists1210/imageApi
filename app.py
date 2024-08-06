@@ -31,6 +31,9 @@ def advanced_search(params):
     url = f"https://www.googleapis.com/customsearch/v1"
     params['cx'] = CX
     params['key'] = API
+    url += '?'
+    for key in params:
+        url += f'{key}={params[key]}&'
     for key in list(params):
         if params[key] == 'any' and key != 'q':
             del params[key]
@@ -103,7 +106,7 @@ def advanced_searchres():
 
     # Perform the search
     results = advanced_search(params)
-
+    return results
     if 'error' in results:
         return jsonify(results), 500
 
