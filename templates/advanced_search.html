@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+</head>
+<body>
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    
+    <main>
+        <h4>Advanced Image Search Results</h4>
+        
+        <div class="image-container">
+            {% for image in images %}
+                <div>
+                    <img src="{{ image.image_link }}" alt="{{ image.title }}"><br>
+                    <a href="{{ image.context_link }}">{{ image.title }}</a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="params">
+            <h5>Search Parameters:</h5>
+            <ul>
+                <li>Query: <b>{{ params.q }}</b></li>
+                <li>File Type: <b>{{ params.fileType }}</b></li>
+                <li>Image Size: <b>{{ params.imgSize }}</b></li>
+                <li>Image Type: <b>{{ params.imgType }}</b></li>
+                <li>Image Color Type: <b>{{ params.imgColorType }}</b></li>
+            </ul>
+        </div>
+    </main>
+
+</body>
+</html>
