@@ -5,8 +5,6 @@ import logging
 import time
 
 logfilename = 'app.log'
-if os.path.exists(logfilename):
-    os.remove(logfilename)
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename=logfilename, encoding='utf-8')
@@ -30,6 +28,14 @@ def log_performance(func):
     wrapper.__name__ = func.__name__  # Preserve original function name
     return wrapper
 
+@app.route('/sort', methods=['POST'])
+@log_performance
+def sort(images, key='title', reverse=False):
+    l = [element for row in images for element in row]
+    new = sorted(l, key=lambda x: x[key], reverse=reverse)
+    ima = [new[i:i+3] for i in range(0, len(new), 3)]
+    return render_template('search.html', images=ima, query=request.form['query'], num=request.form['num'])
+
 @log_performance
 def search_images(query, num):
     logging.info(f"Searching images for query: {query}, num: {num}")
@@ -49,6 +55,7 @@ def search_images(query, num):
         logging.error(f"Error during image search: {e}")
         return {"error": str(e)}
     
+    print(url + '?' + '&'.join([f'{k}={v}' for k, v in params.items()]))
     images = response.json().get('items', [])
     if num > 10:
         pages = num // 10
@@ -151,7 +158,10 @@ def search():
         images.append({
             'title': item.get('title'),
             'image_link': item.get('link'), 
-            'context_link': item['image'].get('contextLink')
+            'context_link': item['image'].get('contextLink'),
+            'width': item['image'].get('width'),
+            'height': item['image'].get('height'),
+            'fileSize': item['image'].get('byteSize')
         })
     groups = [images[i:i+3] for i in range(0, len(images), 3)]
     return render_template('search.html', images=groups, query=search_query, num=request.form['num'])

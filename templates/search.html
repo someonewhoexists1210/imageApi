@@ -15,6 +15,20 @@
     
     <main>
         <h4>Image Search Results for: <b>{{ query }}</b></h4>
+
+        <form action='/sort'>
+            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="num" value="{{ num }}">
+            <input type="hidden" name="images" value="{{ images }}">
+            <label for="key">Sort by</label>
+            <select name="key">
+                <option value="width">width</option>
+                <option value="height">height</option>
+                <option value='title'>title</option>
+                <option value='fileSize'>File Size</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
         
         <div class="image-container">
             {% if images|length == 0 %}
