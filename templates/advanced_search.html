@@ -30,6 +30,7 @@
         </div>
         <div class="pagination-controls">
             <button id="prevPage" onclick="prevPage()">Previous</button>
+            <span id="page">Page <span class='current-page'></span></span>
             <button id="nextPage" onclick="nextPage()">Next</button>
         </div>
         <div class="params">
@@ -40,6 +41,7 @@
                 <li>Image Size: <b>{{ params.imgSize }}</b></li>
                 <li>Image Type: <b>{{ params.imgType }}</b></li>
                 <li>Image Color Type: <b>{{ params.imgColorType }}</b></li>
+                <li>Number of images: <b>{{ params.num }}</b></li>
             </ul>
         </div>
 

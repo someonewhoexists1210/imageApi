@@ -18,13 +18,30 @@
         
         <div class="image-container">
             {% for image in images %}
-                <div>
-                    <img src="{{ image.image_link }}" alt="Image could not load"><br>
-                    <a href="{{ image.context_link }}">{{ image.title }}</a>
+                <div class='gr'>
+                    <div class="image-card">
+                        <img src="{{ image.image_link }}" alt="Image could not load"><br>
+                        <a href="{{ image.context_link }}">{{ image.title }}</a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        <div class="pagination-controls">
+            <button id="prevPage" onclick="prevPage()">Previous</button>
+            <span id="page">Page <span class='current-page'></span></span>
+            <button id="nextPage" onclick="nextPage()">Next</button>
+        </div>
+        
+        <div class="params">
+            <h5>Search Parameters:</h5>
+            <ul>
+                <li>Query: <b>{{ query }}</b></li>
+                <li>Number of images: <b>{{ num }}</b></li>
+            </ul>
+        </div>
+        
     </main>
 
+    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
 </body>
 </html>

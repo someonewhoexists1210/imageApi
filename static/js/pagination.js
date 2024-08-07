@@ -1,8 +1,10 @@
 let currentPage = 1;
 const hiddenDivs = document.querySelectorAll('.gr');
+const currentPageSpan = document.querySelector('.current-page');
 
 function showPage(pageNumber) {
     const startIndex = pageNumber - 1;
+    currentPageSpan.innerHTML = pageNumber + ' / ' + hiddenDivs.length;
 
     hiddenDivs.forEach((div, index) => {
         if (index == startIndex) {

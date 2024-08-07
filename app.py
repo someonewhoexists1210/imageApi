@@ -11,7 +11,7 @@ if not API or not CX:
 app = Flask(__name__)
 cache = dc.Cache('cache_imageSearch')
 
-def search_images(query):
+def search_images(query, num):
     url = f"https://www.googleapis.com/customsearch/v1"
     params = {
         'q': query,
@@ -19,26 +19,55 @@ def search_images(query):
         'key': API,
         'searchType': 'image',
     }
+    num = int(num)
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
     
-    return response.json()
+    images = response.json().get('items', [])
+    if num > 10:
+        pages = num // 10
+        for p in range(1, pages):
+            params['start'] = p * 10 + 1
+            try:
+                response = requests.get(url, params=params)
+                response.raise_for_status()
+                images.extend(response.json().get('items', []))
+            except requests.exceptions.RequestException as e:
+                return {"error": str(e)}
+            
+    print(len(images))
+    return images
 
 def advanced_search(params):
     url = f"https://www.googleapis.com/customsearch/v1"
+    params = params.copy()
     params['cx'] = CX
     params['key'] = API
     params['searchType'] = 'image'
+    num = int(params.get('num', 10))
+    del params['num']
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
     
-    return response.json()
+    images = response.json().get('items', [])
+    if num > 10:
+        pages = num // 10
+        for p in range(1, pages):
+            params['start'] = p * 10 + 1
+            try:
+                response = requests.get(url, params=params)
+                response.raise_for_status()
+                images.extend(response.json().get('items', []))
+            except requests.exceptions.RequestException as e:
+                return {"error": str(e)}
+                
+    return images
 
 @app.route('/')
 def home():
@@ -56,21 +85,21 @@ def search():
         print('cache hit')
         results = cache.get(search_query)
     else:
-        results = search_images(search_query)
+        results = search_images(search_query, request.form['num'])
         if 'error' in results:
             return jsonify(results), 500
         cache.set(search_query, results, expire=3600)
     
-    if 'items' in results:
+    if len(results) > 0:
         images = []
-        for item in results['items']:
+        for item in results:
             images.append({
                 'title': item.get('title'),
                 'image_link': item.get('link'), 
                 'context_link': item['image'].get('contextLink')
             })
-        
-        return render_template('search.html', images=images, query=search_query)
+        print(len(images))
+        return render_template('search.html', images=images, query=search_query, num=request.form['num'])
     else:
         return jsonify({"error": "No images found"}), 404
 
@@ -86,6 +115,7 @@ def advanced_searchres():
         'imgSize': request.form.get('imgSize'),
         'imgType': request.form.get('imgType'),
         'imgColorType': request.form.get('imgColorType'),
+        'num': request.form.get('num')
     }
 
     if not params['q'] or len(params['q'].strip()) == 0:
@@ -102,15 +132,16 @@ def advanced_searchres():
         return jsonify(results), 500
 
     
-    if 'items' in results:
+    if len(results) > 0 :
         images = []
-        for item in results['items']:
+        for item in results:
             images.append({
                 'title': item.get('title'),
                 'image_link': item.get('link'),
                 'context_link': item.get('image').get('contextLink')
             })
         groups = [images[i:i+3] for i in range(0, len(images), 3)]
+        print(params)
         return render_template('advanced_search.html', images=groups, params=params)
     else:
         return jsonify({"error": "No images found"}), 404
