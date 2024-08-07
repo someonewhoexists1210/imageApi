@@ -55,7 +55,7 @@ h4 {
     text-decoration: none;
     color: #4CAF50;
     font-weight: bold;
-    align-self: flex-end;
+    align-self: flex-start;
 }
 
 .image-card a:hover {

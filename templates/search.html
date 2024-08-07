@@ -17,14 +17,20 @@
         <h4>Image Search Results for: <b>{{ query }}</b></h4>
         
         <div class="image-container">
-            {% for image in images %}
-                <div class='gr'>
-                    <div class="image-card">
-                        <img src="{{ image.image_link }}" alt="Image could not load"><br>
-                        <a href="{{ image.context_link }}">{{ image.title }}</a>
+            {% if images|length == 0 %}
+            <h3>No images found for the query</h3>
+            {% else %}
+                {% for group in images %}
+                    <div class='gr' style="display: none;">
+                        {% for image in group %}
+                        <div class="image-card">
+                            <img src="{{ image.image_link }}" alt="Image could not load"><br>
+                            <a href="{{ image.context_link }}">{{ image.title }}</a>
+                        </div>
+                        {% endfor %}
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="pagination-controls">
             <button id="prevPage" onclick="prevPage()">Previous</button>
