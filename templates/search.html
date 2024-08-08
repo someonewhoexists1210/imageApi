@@ -16,9 +16,8 @@
     <main>
         <h4>Image Search Results for: <b>{{ query }}</b></h4>
         <form id='sort'>
-            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="q" value="{{ query }}">
             <input type="hidden" name="num" value="{{ num }}">
-            <input type="hidden" name="images" value="{{ images }}">
             <label for="key">Sort by</label>
             <select name="key" id='key'>
                 <option value='date'>Date</option>

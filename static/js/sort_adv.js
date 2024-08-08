@@ -3,15 +3,13 @@ form.addEventListener('submit', (event) => {
     event.preventDefault(); 
     const option = document.getElementById('key');
     
-    params = {
-        'q': document.getElementsByName('query')[0].value, 
-        'num': document.getElementsByName('num')[0].value,
-        'sort': option.value,
-        'reverse': false,
-    };
+    p = document.getElementsByName('parameters')[0].value.replace(/'/g, '"');
+    params = JSON.parse(p);
+    params['reverse'] = false;
+    params['sort'] = option.value;
 
 
-    fetch('http://127.0.0.1:5000/sort', {
+    fetch('http://127.0.0.1:5000/sort_adv', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

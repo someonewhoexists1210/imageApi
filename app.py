@@ -33,7 +33,7 @@ def log_performance(func):
 @log_performance
 def sort():
     request_data = request.get_json()
-    query = request_data['query']
+    query = request_data['q']
     num = request_data['num']
     reverse = request_data.get('reverse')
     sort_by = request_data.get('sort')
@@ -41,8 +41,7 @@ def sort():
     if sort_by == 'date':
         results = advanced_search({'q': query, 'num': num, 'sort': '-date' if reverse else 'date'})
     else:
-        imgs = search_images(query, num)
-        results = sorted(imgs, key=lambda x: x[sort_by], reverse=reverse)
+        results = search_images(query, num)
 
     images = []
     for item in results:
@@ -54,7 +53,39 @@ def sort():
             'height': item['image'].get('height'),
             'fileSize': item['image'].get('byteSize')
         })
+    if sort_by != 'date':
+        images.sort(key=lambda x: x[sort_by], reverse=reverse)
     return jsonify({'images': images})
+
+@log_performance
+@app.route('/sort_adv', methods=['POST'])
+def sort_adv():
+    request_data = request.get_json()
+    reverse = request_data['reverse']
+    sort_by = request_data['sort']
+    if sort_by == 'date':
+        request_data['sort'] = '-date' if reverse else 'date'
+        del request_data['reverse']
+        results = advanced_search(request_data)
+    else:
+        del request_data['sort']
+        del request_data['reverse']
+        results = advanced_search(request_data)
+
+    images = []
+    for item in results:
+        images.append({
+            'title': item.get('title'),
+            'image_link': item.get('link'), 
+            'context_link': item['image'].get('contextLink'),
+            'width': item['image'].get('width'),
+            'height': item['image'].get('height'),
+            'fileSize': item['image'].get('byteSize')
+        })
+    if sort_by != 'date':
+        images.sort(key=lambda x: x[sort_by], reverse=reverse)
+    return jsonify({'images': images})
+
 
 @log_performance
 def search_images(query, num):
@@ -150,7 +181,7 @@ def home():
 @app.route('/search', methods=['POST'])
 @log_performance
 def search():
-    search_query = request.form['query']
+    search_query = request.form['q']
     logging.info(f"Received search request for query: {search_query}")
     if not search_query or len(search_query.strip()) == 0:
         logging.warning("Search query cannot be empty")
@@ -193,7 +224,7 @@ def advanced():
 @log_performance
 def advanced_searchres():
     params = {
-        'q': request.form.get('query'),
+        'q': request.form.get('q'),
         'fileType': request.form.get('fileType'),
         'imgSize': request.form.get('imgSize'),
         'imgType': request.form.get('imgType'),

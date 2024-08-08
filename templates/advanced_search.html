@@ -15,6 +15,17 @@
     
     <main>
         <h4>Advanced Image Search Results</h4>
+        <form id='sort'>
+            <input type="hidden" name="parameters" value="{{ params }}">
+            <label for="key">Sort by</label>
+            <select name="key" id='key'>
+                <option value='date'>Date</option>
+                <option value="width">Width</option>
+                <option value="height">Height</option>
+                <option value='title'>Title</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
         
         <div class="image-container">
             {% if images|length == 0 %}
@@ -53,5 +64,6 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sort_adv.js') }}"></script>
 </body>
 </html>
