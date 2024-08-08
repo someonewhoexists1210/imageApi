@@ -31,29 +31,24 @@ def log_performance(func):
 
 @app.route('/sort', methods=['POST'])
 @log_performance
-def sort(images, key='title', reverse=False):
-    l = [element for row in images for element in row]
-    new = sorted(l, key=lambda x: x[key], reverse=reverse)
-    ima = [new[i:i+3] for i in range(0, len(new), 3)]
-    return render_template('search.html', images=ima, query=request.form['query'], num=request.form['num'])
-
-@log_performance
-def handle_date(date):
-    years_ago = 0
-    months_ago = 0
-    if date == datetime.datetime().today():
-        date = datetime.datetime.now().date()
-    else:
-        date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
-    days_ago = (datetime.datetime.now().date() - date).days
-    if days_ago >= 365:
-        years_ago = days_ago // 365
+def sort(reverse=False):
+    query = request.form['query']
+    num = request.form['num']
         
-    else:
-        months_ago = days_ago // 30
-    lis = ['y' + str(years_ago), 'm' + str(months_ago), 'd' + str(days_ago)]
-    return [''.join(list(filter(lambda x: x[1] == '0', lis)))][0]
-    
+    results = advanced_search({'q': query, 'num': num, 'sort': '-date' if reverse else 'date'})
+
+    images = []
+    for item in results:
+        images.append({
+            'title': item.get('title'),
+            'image_link': item.get('link'), 
+            'context_link': item['image'].get('contextLink'),
+            'width': item['image'].get('width'),
+            'height': item['image'].get('height'),
+            'fileSize': item['image'].get('byteSize')
+        })
+    groups = [images[i:i+3] for i in range(0, len(images), 3)]
+    return render_template('search.html', images=groups, query=query, num=num, sort_by='date', reverse=reverse)
 
 @log_performance
 def search_images(query, num):
@@ -74,7 +69,6 @@ def search_images(query, num):
         logging.error(f"Error during image search: {e}")
         return {"error": str(e)}
     
-    print(url + '?' + '&'.join([f'{k}={v}' for k, v in params.items()]))
     images = response.json().get('items', [])
     if num > 10:
         pages = num // 10
@@ -199,7 +193,6 @@ def advanced_searchres():
         'imgType': request.form.get('imgType'),
         'imgColorType': request.form.get('imgColorType'),
         'num': request.form.get('num'),
-        'dateRestrict': handle_date(request.form.get('date'))
     }
 
     logging.info(f"Received advanced search request with params: {params}")
