@@ -18,6 +18,7 @@
         <form id='sort'>
             <input type="hidden" name="query" value="{{ query }}">
             <input type="hidden" name="num" value="{{ num }}">
+            <input type="hidden" name="images" value="{{ images }}">
             <label for="key">Sort by</label>
             <select name="key" id='key'>
                 <option value='date'>Date</option>
@@ -60,56 +61,6 @@
         
     </main>
 
-    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/sort.js') }}"></script>
-</body>
-</html>
-
-        <form id='sort'>
-            <input type="hidden" name="query" value="{{ query }}">
-            <input type="hidden" name="num" value="{{ num }}">
-            <label for="key">Sort by</label>
-            <select name="key" id='key'>
-                <option value="width">Width</option>
-                <option value="height">Height</option>
-                <option value='title'>Title</option>
-                <option value='date'>Date</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
-        
-        <div class="image-container">
-            {% if images|length == 0 %}
-            <h3>No images found for the query</h3>
-            {% else %}
-                {% for group in images %}
-                    <div class='gr' style="display: none;">
-                        {% for image in group %}
-                        <div class="image-card">
-                            <img src="{{ image.image_link }}" alt="Image could not load"><br>
-                            <a href="{{ image.context_link }}">{{ image.title }}</a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div class="pagination-controls">
-            <button id="prevPage" onclick="prevPage()">Previous</button>
-            <span id="page">Page <span class='current-page'></span></span>
-            <button id="nextPage" onclick="nextPage()">Next</button>
-        </div>
-        
-        <div class="params">
-            <h5>Search Parameters:</h5>
-            <ul>
-                <li>Query: <b>{{ query }}</b></li>
-                <li>Number of images: <b>{{ num }}</b></li>
-            </ul>
-        </div>
-        
-    </main>
-    <script>var images = {{ images }};</script>
     <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sort.js') }}"></script>
 </body>

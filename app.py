@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 import os, requests
 import diskcache as dc
 import logging
@@ -31,11 +31,18 @@ def log_performance(func):
 
 @app.route('/sort', methods=['POST'])
 @log_performance
-def sort(reverse=False):
-    query = request.form['query']
-    num = request.form['num']
+def sort():
+    request_data = request.get_json()
+    query = request_data['query']
+    num = request_data['num']
+    reverse = request_data.get('reverse')
+    sort_by = request_data.get('sort')
         
-    results = advanced_search({'q': query, 'num': num, 'sort': '-date' if reverse else 'date'})
+    if sort_by == 'date':
+        results = advanced_search({'q': query, 'num': num, 'sort': '-date' if reverse else 'date'})
+    else:
+        imgs = search_images(query, num)
+        results = sorted(imgs, key=lambda x: x[sort_by], reverse=reverse)
 
     images = []
     for item in results:
@@ -47,8 +54,7 @@ def sort(reverse=False):
             'height': item['image'].get('height'),
             'fileSize': item['image'].get('byteSize')
         })
-    groups = [images[i:i+3] for i in range(0, len(images), 3)]
-    return render_template('search.html', images=groups, query=query, num=num, sort_by='date', reverse=reverse)
+    return jsonify({'images': images})
 
 @log_performance
 def search_images(query, num):
