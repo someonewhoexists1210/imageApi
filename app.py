@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, render_template, request
 import os, requests
 import diskcache as dc
@@ -35,6 +36,24 @@ def sort(images, key='title', reverse=False):
     new = sorted(l, key=lambda x: x[key], reverse=reverse)
     ima = [new[i:i+3] for i in range(0, len(new), 3)]
     return render_template('search.html', images=ima, query=request.form['query'], num=request.form['num'])
+
+@log_performance
+def handle_date(date):
+    years_ago = 0
+    months_ago = 0
+    if date == datetime.datetime().today():
+        date = datetime.datetime.now().date()
+    else:
+        date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    days_ago = (datetime.datetime.now().date() - date).days
+    if days_ago >= 365:
+        years_ago = days_ago // 365
+        
+    else:
+        months_ago = days_ago // 30
+    lis = ['y' + str(years_ago), 'm' + str(months_ago), 'd' + str(days_ago)]
+    return [''.join(list(filter(lambda x: x[1] == '0', lis)))][0]
+    
 
 @log_performance
 def search_images(query, num):
@@ -179,7 +198,8 @@ def advanced_searchres():
         'imgSize': request.form.get('imgSize'),
         'imgType': request.form.get('imgType'),
         'imgColorType': request.form.get('imgColorType'),
-        'num': request.form.get('num')
+        'num': request.form.get('num'),
+        'dateRestrict': handle_date(request.form.get('date'))
     }
 
     logging.info(f"Received advanced search request with params: {params}")
