@@ -82,3 +82,36 @@ h4 {
 .pagination-controls button:hover {
     background-color: #45a049;
 }
+
+#sort {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#sort label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#sort select {
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#sort button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#sort button:hover {
+    background-color: #45a049;
+}
