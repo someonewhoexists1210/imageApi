@@ -43,8 +43,8 @@ If you want to replicate this application on your local machine, follow the step
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/image-search-website.git
-    cd image-search-website
+    git clone https://github.com/someonewhoexists1210/imageApi.git
+    cd imageApi
     ```
 
 2. Set up a virtual environment and activate it:
@@ -72,7 +72,7 @@ If you want to replicate this application on your local machine, follow the step
 6. Access the application by visiting `http://127.0.0.1:5000/` in your web browser.
 
 ## Usage
-This app is present on `tbd.com`
+This app is present on ``(has not been deployed yet)
 You are limited to 10 queries a day
 1. **Basic Search**:
    - Enter your search query in the input field on the homepage.
@@ -102,10 +102,6 @@ You are limited to 10 queries a day
 ## Caching and Performance
 - **Caching**: Results are cached using Diskcache to reduce the number of API calls. Cached results expire after 1 hour.
 - **Performance Logging**: Function execution time is logged to monitor and improve performance.
-
-## Deployment
-- **Heroku**: If deploying to Heroku, set up environment variables using the Heroku CLI or dashboard.
-- **Docker**: Optionally, create a Dockerfile for containerized deployment.
 
 ## Contributing
 Contributions are welcome! Please follow these steps:
