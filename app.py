@@ -1,4 +1,4 @@
-import datetime
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request
 import os, requests
 import diskcache as dc
@@ -7,6 +7,7 @@ import time
 
 logfilename = 'app.log'
 
+load_dotenv()
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename=logfilename, encoding='utf-8')
 
@@ -280,4 +281,4 @@ def advanced_searchres():
     return render_template('advanced_search.html', images=groups, params=params)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5671)

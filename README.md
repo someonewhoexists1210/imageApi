@@ -40,6 +40,7 @@ If you want to replicate this application on your local machine, follow the step
 - Google Custom Search Engine ID
 
 ### Installation
+This website is available at https://image.someonewhoexists.hackclub.app/
 
 1. Clone the repository:
     ```bash
@@ -106,6 +107,9 @@ You are limited to 10 queries a day
 ## Deployment
 - **Heroku**: If deploying to Heroku, set up environment variables using the Heroku CLI or dashboard.
 - **Docker**: Optionally, create a Dockerfile for containerized deployment.
+
+## Screenshot
+![alt text](image.png)
 
 ## Contributing
 Contributions are welcome! Please follow these steps:
