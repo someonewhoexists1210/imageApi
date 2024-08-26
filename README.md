@@ -44,8 +44,8 @@ This website is available at https://image.someonewhoexists.hackclub.app/
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/image-search-website.git
-    cd image-search-website
+    git clone https://github.com/someonewhoexists1210/imageApi.git
+    cd imageApi
     ```
 
 2. Set up a virtual environment and activate it:
@@ -73,7 +73,6 @@ This website is available at https://image.someonewhoexists.hackclub.app/
 6. Access the application by visiting `http://127.0.0.1:5000/` in your web browser.
 
 ## Usage
-This app is present on `tbd.com`
 You are limited to 10 queries a day
 1. **Basic Search**:
    - Enter your search query in the input field on the homepage.
